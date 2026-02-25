@@ -10,37 +10,7 @@ st.set_page_config(page_title="הצ'אט שלי", page_icon="🤖", layout="wide
 
 
 # ====== CSS לעיצוב ======
-st.markdown("""
-    <style>
-    /* רקע התמונה */
-    .stApp {
-        background-image: url("whatsApp image 2025-11-05 at 19.05.53.jpeg");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
 
-    /* מיכל שקוף לצ'אט */
-    .chat-box {
-        background: rgba(255, 255, 255, 0.72);
-        padding: 25px;
-        border-radius: 18px;
-        box-shadow: 0 8px 28px rgba(0,0,0,0.25);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        margin-top: 15px;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
-
-# ====== TITLE ======
-st.title("🤖 הצ'אט שלי")
-
-#load_dotenv()
-
-#API_KEY = os.getenv("API_KEY")
-API_KEY = loadAPIKey()
 
 
 
