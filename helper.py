@@ -40,6 +40,7 @@ all_models = [
              #  "gemini-3-flash",
                ]
 
+
 def createClient():
     st.session_state.client = genai.Client(api_key=loadAPIKey()) #יוצרים לקוח של ג'מיני
 
