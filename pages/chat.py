@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 from google import genai
 import streamlit as st
 import time
-
+from helper import *
 # ====== PAGE SETTINGS ======
 st.set_page_config(page_title="הצ'אט שלי", page_icon="🤖", layout="wide")
 
@@ -37,8 +37,11 @@ st.markdown("""
 # ====== TITLE ======
 st.title("🤖 הצ'אט שלי")
 
-load_dotenv()
-API_KEY = os.getenv("API_KEY")
+#load_dotenv()
+
+#API_KEY = os.getenv("API_KEY")
+API_KEY = loadAPIKey()
+
 
 
 # ------ FUNCTIONS ------
