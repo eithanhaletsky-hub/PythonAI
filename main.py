@@ -1,5 +1,4 @@
 import streamlit as st
-import base64
 
 # --- Page Config ---
 st.set_page_config(
@@ -9,9 +8,7 @@ st.set_page_config(
 )
 
 # --- Load Image as Base64 (לרקע מלא) ---
-def get_base64_of_image(image_path):
-    with open(image_path, "rb") as img:
-        return base64.b64encode(img.read()).decode()
+
 
 
 # --- Title ---
