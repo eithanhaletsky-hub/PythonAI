@@ -9,6 +9,47 @@ empty_cell = "🟢"
 player_cell = "🔵"
 comp_cell = "🔴"
 
+moves = 3
+big_number = 854782957895278753895279834895432783958292582349802790958859438594358489542250894859248594259847985385959848945224
+
+def minimax(board,moves_left,the_player):
+    computer_score = calc_board_score(board,comp_cell)
+    human_score = calc_board_score(board,player_cell)
+
+    if computer_score >= 100:
+        return big_number
+    if human_score >= 100:
+        return -big_number
+
+    has_place_cols = []
+
+    for c in range(cols_number):
+        if board[0][c] == empty_cell:
+            has_place_cols.append(c)
+
+        if has_place_cols == []:
+            return 0
+
+        if moves_left == 0:
+            return computer_score
+
+        if the_player == comp_cell:
+            best_score = -big_number
+            for c in has_place_cols:
+                temp_board = create_virtual_board(board,the_player,c)
+                col_score = minimax(temp_board,moves - 1,player_cell)
+                if best_score < col_score:
+                    best_score = col_score
+                return best_score
+        else:
+            worst_score = big_number
+            for c in has_place_cols:
+                temp_board = create_virtual_board(board, the_player, c)
+                col_score = minimax(temp_board, moves - 1, comp_cell)
+                if col_score < worst_score:
+                    worst_score = col_score
+                return worst_score
+
 def create_virtual_board(board,player,col):
     temp_board = copy.deepcopy(board)
 
@@ -44,7 +85,7 @@ def calc_score(range4,good):
 
     score = 0
     if range4.count(good) == 4:
-        score += 100
+        score += 50000
     elif range4.count(good) == 3 and range4.count(empty_cell) == 1:
         score += 50
     elif range4.count(good) == 2 and range4.count(empty_cell) == 2:
@@ -211,17 +252,19 @@ def computer_play():
     #col = random.randint(0,cols_number - 1)
     best_score = -2248726572463763536325652987
     best_col = -1
+    all_scores = []
     for c in range(cols_number):
         if board[0][c] != empty_cell:
+            all_scores.append("-")
             continue
 
         temp_board = create_virtual_board(board,comp_cell,c)
         score = calc_board_score(temp_board,comp_cell)
-
+        all_scores.append(score)
         if best_score < score:
             best_score = score
             best_col = c
-        print(f"{c}: {score}")
+            st.session_state.all_scores = all_scores
     click(best_col)
 
     #click(col)
@@ -262,6 +305,25 @@ for row in range (rows_number): #עבור כל שורה
 
 if turn == comp_cell and winner == "" and has_empty:
     computer_play()
+
+if "all_scores" not in st.session_state:
+    st.session_state.all_scores = [0] * cols_number
+all_scores = st.session_state.all_scores
+
+scores_cols = st.columns(cols_number)
+for c in range(cols_number):
+    with scores_cols[c]:
+        col_score = all_scores[c]
+        if col_score == 0 or col_score == "-":
+            st.badge(str(col_score), color = "gray")
+        elif col_score < 0:
+            st.badge(str(col_score), color = "red")
+        else:
+            st.badge(str(col_score), color = "green")
+
+
+
+
 
 
 
