@@ -2,6 +2,9 @@ import streamlit as st
 
 import copy
 
+from six import moves
+from streamlit import sidebar
+
 rows_number = 6
 cols_number = 7
 
@@ -9,8 +12,22 @@ empty_cell = "🟢"
 player_cell = "🔵"
 comp_cell = "🔴"
 
-moves = 3
-big_number = 854782957895278753895279834895432783958292582349802790958859438594358489542250894859248594259847985385959848945224
+big_number = 89654835684598
+
+if "moves" not in st.session_state:
+    st.session_state.moves = 3
+
+with st.sidebar:
+    st.text(f"שחקן: {player_cell}")
+    st.text(f"מחשב: {comp_cell}")
+    st.divider
+
+    moves = st.slider(
+        label="רמת קושי",
+        value=st.session_state.moves,
+        min_value=0,
+        max_value=5
+    )
 
 def minimax(board,moves_left,the_player):
     computer_score = calc_board_score(board,comp_cell)
@@ -37,7 +54,7 @@ def minimax(board,moves_left,the_player):
             best_score = -big_number
             for c in has_place_cols:
                 temp_board = create_virtual_board(board,the_player,c)
-                col_score = minimax(temp_board,moves - 1,player_cell)
+                col_score = minimax(temp_board,moves_left - 1,player_cell)
                 if best_score < col_score:
                     best_score = col_score
                 return best_score
@@ -45,7 +62,7 @@ def minimax(board,moves_left,the_player):
             worst_score = big_number
             for c in has_place_cols:
                 temp_board = create_virtual_board(board, the_player, c)
-                col_score = minimax(temp_board, moves - 1, comp_cell)
+                col_score = minimax(temp_board,moves_left - 1, comp_cell)
                 if col_score < worst_score:
                     worst_score = col_score
                 return worst_score
@@ -259,7 +276,8 @@ def computer_play():
             continue
 
         temp_board = create_virtual_board(board,comp_cell,c)
-        score = calc_board_score(temp_board,comp_cell)
+        #score = calc_board_score(temp_board,comp_cell)
+        score = minimax(temp_board,moves - 1,player_cell)
         all_scores.append(score)
         if best_score < score:
             best_score = score
