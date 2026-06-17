@@ -20,7 +20,7 @@ if "moves" not in st.session_state:
 with st.sidebar:
     st.text(f"שחקן: {player_cell}")
     st.text(f"מחשב: {comp_cell}")
-    st.divider
+    st.divider()
 
     moves = st.slider(
         label="רמת קושי",
@@ -267,9 +267,15 @@ def computer_play():
     import random, time
     #time.sleep (0.23)
     #col = random.randint(0,cols_number - 1)
-    best_score = -2248726572463763536325652987
+    best_score = -2248726572463763536325652987 -big_number
     best_col = -1
     all_scores = []
+
+    if moves == 0:
+        col = random.randint(0,cols_number - 1)
+        click(col)
+        return
+
     for c in range(cols_number):
         if board[0][c] != empty_cell:
             all_scores.append("-")
