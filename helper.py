@@ -33,12 +33,15 @@ def current_time() -> str:  #הולך לחזור משתנה מסוג טקסט
     return time.ctime() #מחזיר את הזמן עכשיו
 
 all_models = [
-              "gemini-2.5-flash",
-              "gemini-2.5-flash-lite",
-              "gemini-2.0-flash",
-              "gemini-2.0-flash-lite",
-               "gemini-3-flash",
-               ]
+    "gemini-3.1-flash-lite", #500 הודעות ביום
+    "gemini-2.5-flash",
+    "gemini-2.5-flash-lite",
+    #  "gemini-2.0-flash",
+     # "gemini-2.0-flash-lite",
+    "gemini-3-flash",
+    "gemini-3.5-flash",
+    "gemini-3-flash-preview",
+      ]
 
 
 def createClient():

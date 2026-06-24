@@ -7,7 +7,7 @@ from helper import *
 # ====== PAGE SETTINGS ======
 st.set_page_config(page_title="הצ'אט שלי", page_icon="🤖", layout="wide")
 
-
+API_KEY = loadAPIKey()
 
 # ====== CSS לעיצוב ======
 
@@ -29,7 +29,7 @@ def send(prompt):
     saveToHistory("user", prompt)
 
     # בניית הקונטקסט מהשיחה כולה
-    all_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash-lite"]
+    #all_models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash-lite"]
 
     context = ""
     for line in st.session_state.history:
