@@ -32,6 +32,32 @@ def current_time() -> str:  #הולך לחזור משתנה מסוג טקסט
     print("use tool")
     return time.ctime() #מחזיר את הזמן עכשיו
 
+def ask_questions(question:str,options:list[str]):
+    """
+    כלי לשאלת שאלות הבהרה - כל פעם שאתה לא בטוח ורוצה לשאול
+    :param question: השאלה
+    :param options: בין 2 ל-4 אפשרויות 
+    :return: הודעת סטטוס
+    """
+    st.session_state["CodeAgent"]["question"] = question
+    st.session_state["CodeAgent"]["options"] = options
+    st.session_state["CodeAgent"]["status"] = "wait"
+    st.rerun()
+
+    #return "השאלה נשלחה למשתמש"
+
+def mark_step_done(step:str, summery:str, next_step:str) ->str:
+    """
+    כלי שמטרתו לסמן שסיימנו שלב בתהליך
+    :param step: שם השלב במדויק
+    :param summery: תקציר מתומצת של מה שהוחלט ונעשה
+    :param next_step: שם השלב הבא
+    :return: אישור לעבור שלב
+    """
+    st.session_state["CodeAgent"]["steps"][step] = summery
+    st.session_state["CodeAgent"]["current_step"] = next_step
+    return "השאלה נשלחה למשתמש. אנא המתן לתשובה, אל תעשה כלום בינתיים, עד שהמשתמש יענה לך"
+
 all_models = [
     "gemini-3.1-flash-lite", #500 הודעות ביום
     "gemini-2.5-flash",
@@ -47,7 +73,7 @@ all_models = [
 def createClient():
     st.session_state.client = genai.Client(api_key=loadAPIKey()) #יוצרים לקוח של ג'מיני
 
-def sendMessage(text,system_prompt,history=[], image=None):
+def sendMessage(text,system_prompt,history=[], image=None,tools = []):
     if 'client' not in st.session_state: #אם לא יצרת חיבור
         createClient()
 
@@ -63,7 +89,7 @@ def sendMessage(text,system_prompt,history=[], image=None):
                 history = history, #ההיסטוריה ששלחנו
                 config = types.GenerateContentConfig (
                     system_instruction = system_prompt,  #ההוראות זה הסיסטם פרומפט
-                    tools = [current_time,web_search],
+                    tools = [current_time,web_search] + tools,
                     automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=False)
                 )
             )
